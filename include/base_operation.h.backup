@@ -1,0 +1,58 @@
+#pragma once
+
+#include <string>
+#include <vector>
+#include "cutlass_error.h"
+
+namespace cutlass_wgrad_grouped {
+
+struct Conv2dConfig {
+    int N;
+    int H;
+    int W;
+    int C;
+    int K;
+    int R;
+    int S;
+    int P;
+    int Q;
+    int pad_h;
+    int pad_w;
+    int stride_h;
+    int stride_w;
+    int dilation_h;
+    int dilation_w;
+};
+
+// Base class for all operations
+class Operation {
+public:
+  std::string name;
+
+  Operation(std::string name) {this->name = name;};
+  virtual ~Operation() { }
+
+  virtual uint64_t get_host_workspace_size() const = 0;
+  
+  virtual Status initialize(
+    void const * arguments, 
+    void *host_workspace) const = 0;
+
+  virtual Status run(void *host_workspace) const = 0;
+
+  virtual Status update_ptrs(
+    void **ptr_A,
+    void **ptr_B,
+    void **ptr_C,
+    void **ptr_D,
+    void *host_workspace) const = 0;
+
+};
+
+
+struct OperationWithWorkspace {
+    Operation * operation;
+    void * host_workspace;
+};
+
+} // namespace cutlass_wgrad_grouped

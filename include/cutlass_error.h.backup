@@ -1,0 +1,54 @@
+#pragma once
+
+namespace cutlass_wgrad_grouped {
+
+/// Status code returned by CUTLASS operations
+enum class Status {
+    kSuccess,                    ///< Operation was successful.
+    kErrorMisalignedOperand,     ///< operands fail alignment requirements.
+    kErrorInvalidDataType,       ///< DataType fails requirement.
+    kErrorInvalidLayout,         ///< Layout fails alignment requirement.
+    kErrorInvalidProblem,        ///< Specified problem size is not supported by operator.
+    kErrorNotSupported,          ///< Operation is not supported on current device.
+    kErrorWorkspaceNull,         ///< The given workspace is null when it is required to be non-null.
+    kErrorInternal,              ///< An error within CUTLASS occurred.
+    kErrorArchMismatch,          ///< CUTLASS runs on a device that it was not compiled for.
+    kErrorInsufficientDriver,    ///< CUTLASS runs with a driver that is too old.
+    kErrorMemoryAllocation,      ///< Kernel launch failed due to insufficient device memory.
+    kInvalid                     ///< Status is unspecified.
+};
+
+/// Convert cutlass status to status strings
+static char const* cutlassGetStatusString(Status status) {
+    switch (status) {
+        case Status::kSuccess:
+        return "Success";
+        case Status::kErrorMisalignedOperand:
+        return "Error Misaligned Operand";
+        case Status::kErrorInvalidDataType:
+        return "Error Invalid Data Type";
+        case Status::kErrorInvalidLayout:
+        return "Error Invalid Layout";
+        case Status::kErrorInvalidProblem:
+        return "Error Invalid Problem";
+        case Status::kErrorNotSupported:
+        return "Error Not Supported";
+        case Status::kErrorWorkspaceNull:
+        return "Error Workspace Null";
+        case Status::kErrorInternal:
+        return "Error Internal";
+        case Status::kErrorInsufficientDriver:
+        return "Error Insufficient Driver";
+        case Status::kErrorArchMismatch:
+        return "Error Architecture Mismatch";
+        case Status::kErrorMemoryAllocation:
+        return "Error Memory Allocation failed";
+        case Status::kInvalid: break;
+    }
+
+    return "Invalid status";
+}
+
+
+
+}
